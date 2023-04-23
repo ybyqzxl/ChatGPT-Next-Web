@@ -1,4 +1,4 @@
-import { SubmitKey } from "../store/app";
+import { SubmitKey } from "../store/config";
 import type { LocaleType } from "./index";
 
 const de: LocaleType = {
@@ -107,6 +107,11 @@ const de: LocaleType = {
       ListCount: (builtin: number, custom: number) =>
         `${builtin} integriert, ${custom} benutzerdefiniert`,
       Edit: "Bearbeiten",
+      Modal: {
+        Title: "Prompt List",
+        Add: "Add One",
+        Search: "Search Prompts",
+      },
     },
     HistoryCount: {
       Title: "Anzahl der angehängten Nachrichten",

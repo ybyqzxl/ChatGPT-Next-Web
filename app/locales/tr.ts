@@ -1,4 +1,4 @@
-import { SubmitKey } from "../store/app";
+import { SubmitKey } from "../store/config";
 import type { LocaleType } from "./index";
 
 const tr: LocaleType = {
@@ -107,6 +107,11 @@ const tr: LocaleType = {
       ListCount: (builtin: number, custom: number) =>
         `${builtin} yerleşik, ${custom} kullanıcı tanımlı`,
       Edit: "Düzenle",
+      Modal: {
+        Title: "Prompt List",
+        Add: "Add One",
+        Search: "Search Prompts",
+      },
     },
     HistoryCount: {
       Title: "Ekli Mesaj Sayısı",
