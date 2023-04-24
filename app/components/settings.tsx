@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, HTMLProps, useRef } from "react";
+import { HTMLProps, useEffect, useMemo, useState } from "react";
 
 import EmojiPicker, { Theme as EmojiTheme } from "emoji-picker-react";
 
@@ -16,21 +16,20 @@ import { Input, List, ListItem, Modal, Popover } from "./ui-lib";
 
 import { IconButton } from "./button";
 import {
-  SubmitKey,
-  useChatStore,
-  Theme,
   ALL_MODELS,
-  useUpdateStore,
-  useAccessStore,
   ModalConfigValidator,
+  SubmitKey,
+  Theme,
+  useAccessStore,
   useAppConfig,
+  useChatStore,
+  useUpdateStore,
 } from "../store";
 import { Avatar } from "./chat";
 
 import Locale, { AllLangs, changeLang, getLang } from "../locales";
 import { copyToClipboard, getEmojiUrl } from "../utils";
-import Link from "next/link";
-import { Path, UPDATE_URL } from "../constant";
+import { Path } from "../constant";
 import { Prompt, SearchService, usePromptStore } from "../store/prompt";
 import { ErrorBoundary } from "./error";
 import { InputRange } from "./input-range";
@@ -190,17 +189,6 @@ export function Settings() {
   ]);
 
   const updateStore = useUpdateStore();
-  const [checkingUpdate, setCheckingUpdate] = useState(false);
-  const currentVersion = updateStore.version;
-  const remoteId = updateStore.remoteVersion;
-  const hasNewVersion = currentVersion !== remoteId;
-
-  function checkUpdate(force = false) {
-    setCheckingUpdate(true);
-    updateStore.getLatestVersion(force).then(() => {
-      setCheckingUpdate(false);
-    });
-  }
 
   const usage = {
     used: updateStore.used,
@@ -229,7 +217,6 @@ export function Settings() {
   const showUsage = accessStore.isAuthorized();
   useEffect(() => {
     // checks per minutes
-    checkUpdate();
     showUsage && checkUsage();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -324,31 +311,6 @@ export function Settings() {
                 <Avatar role="user" />
               </div>
             </Popover>
-          </SettingItem>
-
-          <SettingItem
-            title={Locale.Settings.Update.Version(currentVersion ?? "unknown")}
-            subTitle={
-              checkingUpdate
-                ? Locale.Settings.Update.IsChecking
-                : hasNewVersion
-                ? Locale.Settings.Update.FoundUpdate(remoteId ?? "ERROR")
-                : Locale.Settings.Update.IsLatest
-            }
-          >
-            {checkingUpdate ? (
-              <div />
-            ) : hasNewVersion ? (
-              <Link href={UPDATE_URL} target="_blank" className="link">
-                {Locale.Settings.Update.GoToUpdate}
-              </Link>
-            ) : (
-              <IconButton
-                icon={<ResetIcon></ResetIcon>}
-                text={Locale.Settings.Update.CheckUpdate}
-                onClick={() => checkUpdate(true)}
-              />
-            )}
           </SettingItem>
 
           <SettingItem title={Locale.Settings.SendKey}>
