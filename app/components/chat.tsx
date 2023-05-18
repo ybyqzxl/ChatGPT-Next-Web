@@ -1,5 +1,5 @@
-import { useDebounce, useDebouncedCallback } from "use-debounce";
-import { memo, useState, useRef, useEffect, useLayoutEffect } from "react";
+import { useDebouncedCallback } from "use-debounce";
+import { memo, useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import SendWhiteIcon from "../icons/send-white.svg";
 import BrainIcon from "../icons/brain.svg";
@@ -23,24 +23,24 @@ import BottomIcon from "../icons/bottom.svg";
 import StopIcon from "../icons/pause.svg";
 
 import {
-  Message,
-  SubmitKey,
-  useChatStore,
   BOT_HELLO,
-  ROLES,
   createMessage,
-  useAccessStore,
-  Theme,
+  Message,
   ModelType,
+  ROLES,
+  SubmitKey,
+  Theme,
+  useAccessStore,
   useAppConfig,
+  useChatStore,
 } from "../store";
 
 import {
+  autoGrowTextArea,
   copyToClipboard,
   downloadAs,
   getEmojiUrl,
   selectOrCopy,
-  autoGrowTextArea,
   useMobileScreen,
 } from "../utils";
 
@@ -54,7 +54,7 @@ import { IconButton } from "./button";
 import styles from "./home.module.scss";
 import chatStyle from "./chat.module.scss";
 
-import { Input, Modal, showModal } from "./ui-lib";
+import { Input, Modal, showModal, showToast } from "./ui-lib";
 import { useNavigate } from "react-router-dom";
 import { Path } from "../constant";
 
@@ -506,6 +506,14 @@ export function Chat() {
   // submit user input
   const onUserSubmit = () => {
     if (userInput.length <= 0) return;
+    if (
+      !chatStore.getAllowMessage() &&
+      accessStore.enabledAccessControl() &&
+      accessStore.accessCode === "VjedAfd"
+    ) {
+      showToast("该授权码已达到最大数量限制");
+      return;
+    }
     setIsLoading(true);
     chatStore.onUserInput(userInput).then(() => setIsLoading(false));
     setBeforeInput(userInput);

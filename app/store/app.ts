@@ -102,6 +102,7 @@ interface ChatStore {
   getMemoryPrompt: () => Message;
 
   clearAllData: () => void;
+  getAllowMessage: () => boolean;
 }
 
 function countMessages(msgs: Message[]) {
@@ -115,7 +116,13 @@ export const useChatStore = create<ChatStore>()(
     (set, get) => ({
       sessions: [createEmptySession()],
       currentSessionIndex: 0,
-
+      getAllowMessage() {
+        const currentSession = get().currentSession();
+        const userMsg = currentSession.messages.filter(
+          (item) => item.role === "user",
+        );
+        return userMsg.length < 50;
+      },
       clearSessions() {
         set(() => ({
           sessions: [createEmptySession()],
@@ -477,7 +484,7 @@ export const useChatStore = create<ChatStore>()(
     }),
     {
       name: LOCAL_KEY,
-      version: 1.2,
+      version: 1.3,
       migrate(persistedState, version) {
         const state = persistedState as ChatStore;
 
