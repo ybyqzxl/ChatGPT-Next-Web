@@ -8,7 +8,6 @@ import {
   Modal,
   Select,
   showImageModal,
-  showModal,
   showToast,
 } from "./ui-lib";
 import { IconButton } from "./button";
@@ -17,7 +16,6 @@ import { copyToClipboard, downloadAs, useMobileScreen } from "../utils";
 import CopyIcon from "../icons/copy.svg";
 import LoadingIcon from "../icons/three-dots.svg";
 import ChatGptIcon from "../icons/chatgpt.png";
-import ShareIcon from "../icons/share.svg";
 import BotIcon from "../icons/bot.png";
 
 import DownloadIcon from "../icons/download.svg";
@@ -27,10 +25,8 @@ import { Avatar } from "./emoji";
 import dynamic from "next/dynamic";
 import NextImage from "next/image";
 
-import { toBlob, toJpeg, toPng } from "html-to-image";
+import { toBlob, toPng } from "html-to-image";
 import { DEFAULT_MASK_AVATAR } from "../store/mask";
-import { api } from "../client/api";
-import { prettyObject } from "../utils/format";
 import { EXPORT_MESSAGE_CLASS_NAME } from "../constant";
 import { getClientConfig } from "../config/client";
 
@@ -288,51 +284,6 @@ export function PreviewActions(props: {
 
   const onRenderMsgs = (msgs: ChatMessage[]) => {
     setShouldExport(false);
-
-    api
-      .share(msgs)
-      .then((res) => {
-        if (!res) return;
-        showModal({
-          title: Locale.Export.Share,
-          children: [
-            <input
-              type="text"
-              value={res}
-              key="input"
-              style={{
-                width: "100%",
-                maxWidth: "unset",
-              }}
-              readOnly
-              onClick={(e) => e.currentTarget.select()}
-            ></input>,
-          ],
-          actions: [
-            <IconButton
-              icon={<CopyIcon />}
-              text={Locale.Chat.Actions.Copy}
-              key="copy"
-              onClick={() => copyToClipboard(res)}
-            />,
-          ],
-        });
-        setTimeout(() => {
-          window.open(res, "_blank");
-        }, 800);
-      })
-      .catch((e) => {
-        console.error("[Share]", e);
-        showToast(prettyObject(e));
-      })
-      .finally(() => setLoading(false));
-  };
-
-  const share = async () => {
-    if (props.messages?.length) {
-      setLoading(true);
-      setShouldExport(true);
-    }
   };
 
   return (
@@ -353,13 +304,6 @@ export function PreviewActions(props: {
           shadow
           icon={<DownloadIcon />}
           onClick={props.download}
-        ></IconButton>
-        <IconButton
-          text={Locale.Export.Share}
-          bordered
-          shadow
-          icon={loading ? <LoadingIcon /> : <ShareIcon />}
-          onClick={share}
         ></IconButton>
       </div>
       <div
@@ -484,10 +428,7 @@ export function ImagePreviewer(props: {
           </div>
 
           <div>
-            <div className={styles["main-title"]}>ChatGPT Next Web</div>
-            <div className={styles["sub-title"]}>
-              github.com/Yidadaa/ChatGPT-Next-Web
-            </div>
+            <div className={styles["main-title"]}>Panda's ChatGPT</div>
             <div className={styles["icons"]}>
               <ExportAvatar avatar={config.avatar} />
               <span className={styles["icon-space"]}>&</span>

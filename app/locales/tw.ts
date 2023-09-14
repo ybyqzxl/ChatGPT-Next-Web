@@ -73,14 +73,6 @@ const tw: PartialLocaleType = {
       Title: "匯入系統提示",
       SubTitle: "強制在每個請求的訊息列表開頭添加一個模擬 ChatGPT 的系統提示",
     },
-    Update: {
-      Version: (x: string) => `當前版本：${x}`,
-      IsLatest: "已是最新版本",
-      CheckUpdate: "檢查更新",
-      IsChecking: "正在檢查更新...",
-      FoundUpdate: (x: string) => `發現新版本：${x}`,
-      GoToUpdate: "前往更新",
-    },
     SendKey: "發送鍵",
     Theme: "主題",
     TightBorder: "緊湊邊框",
@@ -90,8 +82,8 @@ const tw: PartialLocaleType = {
     },
     Mask: {
       Splash: {
-        Title: "面具啟動頁面",
-        SubTitle: "新增聊天時，呈現面具啟動頁面",
+        Title: "角色啟動頁面",
+        SubTitle: "新增聊天時，呈現角色啟動頁面",
       },
     },
     Prompt: {
@@ -182,11 +174,11 @@ const tw: PartialLocaleType = {
   Plugin: { Name: "外掛" },
   FineTuned: { Sysmessage: "你是一個助手" },
   Mask: {
-    Name: "面具",
+    Name: "角色",
     Page: {
-      Title: "預設角色面具",
+      Title: "預設角色",
       SubTitle: (count: number) => `${count} 個預設角色定義`,
-      Search: "搜尋角色面具",
+      Search: "搜尋角色",
       Create: "新增",
     },
     Item: {
@@ -199,7 +191,7 @@ const tw: PartialLocaleType = {
     },
     EditModal: {
       Title: (readonly: boolean) =>
-        `編輯預設面具 ${readonly ? "（只读）" : ""}`,
+        `編輯預設角色 ${readonly ? "（只读）" : ""}`,
       Download: "下載預設",
       Clone: "克隆預設",
     },
@@ -211,8 +203,8 @@ const tw: PartialLocaleType = {
   NewChat: {
     Return: "返回",
     Skip: "跳過",
-    Title: "挑選一個面具",
-    SubTitle: "現在開始，與面具背後的靈魂思維碰撞",
+    Title: "挑選一個角色",
+    SubTitle: "現在開始，與角色背後的靈魂思維碰撞",
     More: "搜尋更多",
     NotShow: "不再呈現",
     ConfirmNoShow: "確認禁用？禁用後可以随時在設定中重新啟用。",

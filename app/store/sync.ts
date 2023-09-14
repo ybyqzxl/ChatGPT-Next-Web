@@ -1,4 +1,3 @@
-import { Updater } from "../typing";
 import { ApiPath, StoreKey } from "../constant";
 import { createPersistStore } from "../utils/store";
 import {

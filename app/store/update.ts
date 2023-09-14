@@ -43,49 +43,11 @@ async function getVersion(type: VersionType) {
 export const useUpdateStore = createPersistStore(
   {
     versionType: "tag" as VersionType,
-    lastUpdate: 0,
-    version: "unknown",
-    remoteVersion: "",
     used: 0,
     subscription: 0,
-
     lastUpdateUsage: 0,
   },
   (set, get) => ({
-    formatVersion(version: string) {
-      if (get().versionType === "date") {
-        version = formatVersionDate(version);
-      }
-      return version;
-    },
-
-    async getLatestVersion(force = false) {
-      const versionType = get().versionType;
-      let version =
-        versionType === "date"
-          ? getClientConfig()?.commitDate
-          : getClientConfig()?.version;
-
-      set(() => ({ version }));
-
-      const shouldCheck = Date.now() - get().lastUpdate > 2 * 60 * ONE_MINUTE;
-      if (!force && !shouldCheck) return;
-
-      set(() => ({
-        lastUpdate: Date.now(),
-      }));
-
-      try {
-        const remoteId = await getVersion(versionType);
-        set(() => ({
-          remoteVersion: remoteId,
-        }));
-        console.log("[Got Upstream] ", remoteId);
-      } catch (error) {
-        console.error("[Fetch Upstream Commit Id]", error);
-      }
-    },
-
     async updateUsage(force = false) {
       const overOneMinute = Date.now() - get().lastUpdateUsage >= ONE_MINUTE;
       if (!overOneMinute && !force) return;
